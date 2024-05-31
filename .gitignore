@@ -5,3 +5,11 @@
 *.env.local
 **./env.local
 *./env.local
+**.env
+*.env
+**./env
+*./env
+./server/.env
+./server/env
+
+
