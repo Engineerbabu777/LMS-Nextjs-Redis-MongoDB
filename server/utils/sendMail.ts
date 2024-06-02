@@ -3,6 +3,8 @@ import ejs from 'ejs'
 
 import path from 'path'
 
+require('dotenv').config()
+
 interface EmailOptions {
   email: string
   subject: string
@@ -21,13 +23,13 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
     }
   })
 
-  const {email, subject, template, data} = options;
-  const templatePath = path.join(__dirname,"../mails/",template);
+  const { email, subject, template, data } = options
+  const templatePath = path.join(__dirname, '../mails/', template)
 
-  const html:string = await ejs.renderFile(template,data);
+  const html: string = await ejs.renderFile(templatePath, data)
   const mailOptions = {
-    from:process.env.SMTP_MAIL,
-    to:email,
+    from: process.env.SMTP_MAIL,
+    to: email,
     subject,
     html
   }
@@ -35,5 +37,4 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
   await transporter.sendMail(mailOptions)
 }
 
-
-export default sendMail;
+export default sendMail
