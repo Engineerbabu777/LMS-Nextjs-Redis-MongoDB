@@ -43,7 +43,7 @@ export const registrationUser = CatchAsyncError(
           email: user.email,
           subject: 'Activate your account!',
           data,
-          template: 'activate-mail.ejs'
+          template: 'activation-mail.ejs'
         })
 
         res.status(201).json({
@@ -78,3 +78,48 @@ export const createActivationToken = (user: any): IActivationToken => {
 
   return { token, activationCode }
 }
+
+// activate user!
+interface IActivationRequest {
+  activation_token: string
+  activation_code: string
+}
+
+export const activateUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { activation_code, activation_token } =
+        req.body as IActivationRequest
+      const newUser: { user: IUser; activationCode: string } = jwt.verify(
+        activation_code,
+        process.env.ACTIVATION_CODE!
+      ) as { user: IUser; activationCode: string }
+
+      if (newUser.activationCode != activation_code) {
+        return next(new ErrorHandler('Invalid activation code!', 400))
+      }
+
+      const { name, email, password } = newUser.user
+
+      const existUser = await userModel.findOne({ email })
+
+      if (existUser) {
+        return next(new ErrorHandler('User already exists!', 400))
+      }
+
+      const user = await userModel.create({
+        name,
+        email,
+        password
+      })
+
+      // send response!
+      res.status(201).json({
+        success: true,
+        message: 'User activated successfully!'
+      })
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400))
+    }
+  }
+)

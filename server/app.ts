@@ -8,7 +8,7 @@ export const app = express()
 require('dotenv').config()
 
 // body parser!
-app.use(express.json({ limit: '50md' }))
+app.use(express.json({ limit: '50mb' }))
 
 // cookie parser!
 app.use(cookieParser())
