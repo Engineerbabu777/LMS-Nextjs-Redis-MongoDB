@@ -12,6 +12,7 @@ import {
   sendToken
 } from '../utils/jwt'
 import { redis } from '../utils/redis'
+import { getUserById } from '../services/user.services'
 
 interface IRegistrationBody {
   name: string
@@ -254,6 +255,17 @@ export const updateAccessToken = CatchAsyncError(
         message: 'Access token updated successfully!',
         accessToken
       })
+    } catch (err: any) {
+      next(new ErrorHandler(err.message, 400))
+    }
+  }
+)
+
+// get user info!
+export const getUserInfo = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await getUserById(req?.user?.id, res)
     } catch (err: any) {
       next(new ErrorHandler(err.message, 400))
     }
