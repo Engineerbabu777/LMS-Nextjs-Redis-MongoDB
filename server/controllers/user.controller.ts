@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import ejs from 'ejs'
 import path from 'path'
 import sendMail from '../utils/sendMail'
+import { sendToken } from '../utils/jwt'
 
 interface IRegistrationBody {
   name: string
@@ -153,6 +154,31 @@ export const loginUser = CatchAsyncError(
       if (!passwordMatch) {
         return next(new ErrorHandler('Invalid email or password!', 400))
       }
-    } catch (error: any) {}
+
+      sendToken(user, 200, res)
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400))
+    }
+  }
+)
+
+
+
+// logout user!
+export const logoutUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.cookie('access_token', null, {
+      maxAge:1});
+      res.cookie('refresh_token', null, {
+     maxAge:1 });
+      
+      res.status(200).json({
+        success: true,
+        message: 'Logged out successfully!'
+      })
+  }catch(err:any){
+    next(new ErrorHandler(err.message, 400))
+  }
   }
 )
