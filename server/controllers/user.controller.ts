@@ -23,11 +23,11 @@ export const registrationUser = CatchAsyncError(
       if (isEmailExists) {
         return next(new ErrorHandler('Email already exists', 400))
       }
-      const user: IRegistrationBody = await userModel.create({
+      const user: IRegistrationBody = {
         name,
         email,
         password
-      })
+      }
 
       const activationToken = createActivationToken(user)
 
@@ -92,7 +92,7 @@ export const activateUser = CatchAsyncError(
         req.body as IActivationRequest
       const newUser: { user: IUser; activationCode: string } = jwt.verify(
         activation_code,
-        process.env.ACTIVATION_CODE!
+        process.env.ACTIVATION_SECRET!
       ) as { user: IUser; activationCode: string }
 
       if (newUser.activationCode != activation_code) {
@@ -107,7 +107,7 @@ export const activateUser = CatchAsyncError(
         return next(new ErrorHandler('User already exists!', 400))
       }
 
-      const user = await userModel.create({
+      await userModel.create({
         name,
         email,
         password
@@ -121,5 +121,38 @@ export const activateUser = CatchAsyncError(
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400))
     }
+  }
+)
+
+// login user!
+interface ILoginRequest {
+  email: string
+  password: string
+}
+export const loginUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body as ILoginRequest
+
+      if (!password || !email) {
+        // return error!
+        return next(new ErrorHandler('Please enter email and password!', 400))
+      }
+
+      const user = await userModel.findOne({ email }).select('+password')
+
+      // if no user return error!
+      if (!user) {
+        return next(new ErrorHandler('Invalid email or password!', 400))
+      }
+
+      // match password!
+      const passwordMatch = await user.comparePassword(password)
+
+      // if password not match return error!
+      if (!passwordMatch) {
+        return next(new ErrorHandler('Invalid email or password!', 400))
+      }
+    } catch (error: any) {}
   }
 )
