@@ -7,6 +7,7 @@ import ejs from 'ejs'
 import path from 'path'
 import sendMail from '../utils/sendMail'
 import { sendToken } from '../utils/jwt'
+import { redis } from '../utils/redis'
 
 interface IRegistrationBody {
   name: string
@@ -172,6 +173,9 @@ export const logoutUser = CatchAsyncError(
       maxAge:1});
       res.cookie('refresh_token', null, {
      maxAge:1 });
+
+     const userId = req?.user?._id || "";
+      redis.del(userId);
       
       res.status(200).json({
         success: true,
@@ -182,3 +186,6 @@ export const logoutUser = CatchAsyncError(
   }
   }
 )
+
+
+// update access token!
