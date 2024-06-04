@@ -271,3 +271,28 @@ export const getUserInfo = CatchAsyncError(
     }
   }
 )
+
+interface ISocialAuth {
+  email: string
+  avatar: string
+  name: string
+}
+// social auth!
+export const socialAuth = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { name, email, avatar } = req.body as ISocialAuth
+
+      const user = await userModel.findOne({ email })
+
+      if (!user) {
+        const newUser = await userModel.create({ email, avatar, name })
+        sendToken(newUser, 200, res)
+      } else {
+        sendToken(user, 200, res)
+      }
+    } catch (error: any) {
+      next(new ErrorHandler(error.message, 400))
+    }
+  }
+)
