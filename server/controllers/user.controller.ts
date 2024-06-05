@@ -13,6 +13,7 @@ import {
 } from '../utils/jwt'
 import { redis } from '../utils/redis'
 import { getUserById } from '../services/user.services'
+import cloudinary from 'cloudinary'
 
 interface IRegistrationBody {
   name: string
@@ -352,7 +353,12 @@ export const updateUserPassword = CatchAsyncError(
     try {
       // start!
       const { oldPassword, newPassword } = req.body as IPassword
-      const user = req.user
+
+      // if no password!
+      if (!oldPassword || !newPassword) {
+        return next(new ErrorHandler('Invalid Passwords ( no provided)', 400))
+      }
+      const user = await userModel.findById(req?.user?._id).select('+password')
 
       if (user?.password === undefined) {
         return next(new ErrorHandler('invalid user', 400))
@@ -370,6 +376,9 @@ export const updateUserPassword = CatchAsyncError(
 
       await user.save()
 
+      // update redis cash Data!
+      await redis.set(req?.user?._id as string, JSON.stringify(user))
+
       // return response back!
       res.status(201).json({
         success: true,
@@ -377,6 +386,51 @@ export const updateUserPassword = CatchAsyncError(
       })
     } catch (error: any) {
       next(new ErrorHandler(error.message, 400))
+    }
+  }
+)
+
+interface IUpdatePic {
+  avatar: string
+}
+
+// update profile picture!
+export const updateUserProfilePicture = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { avatar } = req.body as IUpdatePic
+
+      const userId = req.user?._id
+      const user = await userModel.findById(userId)
+
+      if (avatar && user) {
+        // destroy previous image in cloudinary!
+        if (user?.avatar?.public_id) {
+          await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+        } else {
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: 'avatars',
+            width: 150
+          })
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.url
+          }
+        }
+      }
+
+      await user?.save()
+
+      // update redis cash Data!
+      await redis.set(req?.user?._id as string, JSON.stringify(user))
+
+      // return response!
+      res.status(201).json({
+        success: true,
+        user
+      })
+    } catch (err: any) {
+      next(new ErrorHandler(err.message, 400))
     }
   }
 )
