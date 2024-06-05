@@ -243,7 +243,7 @@ export const updateAccessToken = CatchAsyncError(
         }
       )
 
-      req.user = user;
+      req.user = user
 
       // set refresh token in cookie!
       res.cookie('refresh_token', refreshToken, refreshTokenOptions)
@@ -329,14 +329,53 @@ export const updateUserInfo = CatchAsyncError(
       await user?.save()
 
       // update redis cash Data!
-      await redis.set(req?.user?._id, JSON.stringify(user))
+      await redis.set(req?.user?._id as string, JSON.stringify(user))
 
       // return response back!
       res.status(201).json({
         success: true,
         user
       })
-    } catch (error:any) {
+    } catch (error: any) {
+      next(new ErrorHandler(error.message, 400))
+    }
+  }
+)
+
+interface IPassword {
+  oldPassword: string
+  newPassword: string
+}
+// update user password!
+export const updateUserPassword = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // start!
+      const { oldPassword, newPassword } = req.body as IPassword
+      const user = req.user
+
+      if (user?.password === undefined) {
+        return next(new ErrorHandler('invalid user', 400))
+      }
+
+      // match password!
+      const isPasswordMatch = await user?.comparePassword(oldPassword)
+
+      // if not match
+      if (!isPasswordMatch) {
+        return next(new ErrorHandler('Old password is incorrect', 400))
+      }
+
+      user.password = newPassword
+
+      await user.save()
+
+      // return response back!
+      res.status(201).json({
+        success: true,
+        user
+      })
+    } catch (error: any) {
       next(new ErrorHandler(error.message, 400))
     }
   }
