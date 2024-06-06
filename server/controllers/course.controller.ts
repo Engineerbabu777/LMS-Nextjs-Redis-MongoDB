@@ -99,3 +99,24 @@ export const getSingleCourse = CatchAsyncError(
     }
   }
 )
+
+// get all courses!
+export const getAllCourses = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const courses = await courseModel
+      .find()
+      .populate(
+        '-courseData.videoUrl -courseData.questions -courseData.suggestions -courseData.links'
+      )
+
+    res.status(200).json({
+      success: true,
+      courses
+    })
+    } catch (error:any) {
+      return next(new ErrorHandler(error.message, 500))
+      
+    }
+  }
+)
