@@ -75,7 +75,6 @@ const courseDataSchema = new Schema<ICourseData>({
   title: String,
   description: String,
   videoUrl: String,
-  videoThumbnail: Object,
   videSection: String,
   videoLength: Number,
   videoPlayer: String,
@@ -105,10 +104,8 @@ const courseSchema = new Schema<ICourse>(
     thumbnail: {
       public_id: {
         type: String,
-        required: true
       },
       url: {
-        required: true,
         type: String
       }
     },

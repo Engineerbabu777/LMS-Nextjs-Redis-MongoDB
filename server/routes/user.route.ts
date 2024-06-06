@@ -11,7 +11,7 @@ import {
   updateUserPassword,
   updateUserProfilePicture
 } from '../controllers/user.controller'
-import { isAuthenticated } from '../middleware/auth'
+import { authorizeRoles, isAuthenticated } from '../middleware/auth'
 
 const userRouter = express.Router()
 
@@ -28,7 +28,11 @@ userRouter.get('/me', isAuthenticated, getUserInfo)
 
 userRouter.post('/social-auth', socialAuth)
 
-userRouter.put('/update-user-info', isAuthenticated, updateUserInfo)
+userRouter.put(
+  '/update-user-info',
+  isAuthenticated,
+  updateUserInfo
+)
 
 userRouter.put('/update-user-password', isAuthenticated, updateUserPassword)
 
