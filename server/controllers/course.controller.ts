@@ -79,3 +79,23 @@ export const editCourse = CatchAsyncError(
     }
   }
 )
+
+// get single course --- without purchasing!
+export const getSingleCourse = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const course = await courseModel
+        .findById(req.params.id)
+        .populate(
+          '-courseData.videoUrl -courseData.questions -courseData.suggestions -courseData.links'
+        )
+
+      res.status(200).json({
+        success: true,
+        course
+      })
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500))
+    }
+  }
+)

@@ -1,4 +1,8 @@
-import { editCourse, uploadCourse } from '../controllers/course.controller'
+import {
+  editCourse,
+  getSingleCourse,
+  uploadCourse
+} from '../controllers/course.controller'
 import { authorizeRoles, isAuthenticated } from '../middleware/auth'
 import express from 'express'
 
@@ -11,12 +15,12 @@ courseRouter.post(
   uploadCourse
 )
 
-
 courseRouter.post(
-    '/edit-course',
-    authorizeRoles('admin') as any,
-    isAuthenticated,
-    editCourse
-  )
+  '/edit-course/:id',
+  authorizeRoles('admin') as any,
+  isAuthenticated,
+  editCourse
+)
 
+courseRouter.get('/get-course/:id', getSingleCourse)
 export default courseRouter
