@@ -1,4 +1,6 @@
 import {
+  addQuestion,
+  addReplyToQuestion,
   editCourse,
   getAllCourses,
   getCourseContent,
@@ -30,7 +32,7 @@ courseRouter.get('/get-courses/', getAllCourses)
 
 courseRouter.get('/get-course-content/:id', isAuthenticated, getCourseContent)
 
+courseRouter.put('/add-question', isAuthenticated, addQuestion)
+courseRouter.put('/add-answer', isAuthenticated, addReplyToQuestion)
 
-export default courseRouter;
-
-
+export default courseRouter
