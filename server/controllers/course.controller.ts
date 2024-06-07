@@ -147,3 +147,37 @@ export const getAllCourses = CatchAsyncError(
     }
   }
 )
+
+// get course content  --only for valid user!
+export const getCourseContent = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // get user course list!
+      const userCourseList = req.user?.courses
+      const courseId = req.params.id
+
+      // check if course is in user course list!
+      const courseExists = userCourseList?.find(
+        (course: any) => course._id.toString() === courseId
+      )
+
+      // if the course not exists in the list , throw the error!
+      if (!courseExists) {
+        return next(
+          new ErrorHandler('You are not enrolled in this course!', 401)
+        )
+      }
+
+      const course = await courseModel.findById(courseId)
+
+      const content = course?.courseData
+
+      return res.status(200).json({
+        success: true,
+        content
+      })
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400))
+    }
+  }
+)

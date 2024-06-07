@@ -1,6 +1,7 @@
 import {
   editCourse,
   getAllCourses,
+  getCourseContent,
   getSingleCourse,
   uploadCourse
 } from '../controllers/course.controller'
@@ -26,5 +27,7 @@ courseRouter.post(
 courseRouter.get('/get-course/:id', getSingleCourse)
 
 courseRouter.get('/get-courses/', getAllCourses)
+
+courseRouter.get('/get-course-content/', getCourseContent)
 
 export default courseRouter
