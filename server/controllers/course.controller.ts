@@ -5,6 +5,7 @@ import cloudinary from 'cloudinary'
 import { createCourse } from '../services/course.services'
 import { courseModel } from '../models/course.model'
 import { redis } from '../utils/redis'
+import mongoose from 'mongoose'
 
 // upload course!
 export const uploadCourse = CatchAsyncError(
@@ -175,6 +176,55 @@ export const getCourseContent = CatchAsyncError(
       return res.status(200).json({
         success: true,
         content
+      })
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400))
+    }
+  }
+)
+
+// add questions in course!
+interface IAddQuestionData {
+  question: string
+  courseId: string
+  contentId: string
+}
+
+export const addQuestion = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { question, courseId, contentId }: IAddQuestionData = req.body
+
+      const course = await courseModel.findById(courseId)
+
+      if (!mongoose.Types.ObjectId.isValid(contentId)) {
+        return next(new ErrorHandler('Invalid content id!', 400))
+      }
+
+      const content = course?.courseData?.find((content: any) =>
+        content._id.equals(contentId)
+      )
+
+      if (!content) {
+        return next(new ErrorHandler('Invalid content id!', 400))
+      }
+
+      // create a new question object!
+      const newQuestion = {
+        user: req.user,
+        question,
+        questionReplies: []
+      }
+
+      // add this question to our course content!
+      content.questions.push(newQuestion)
+
+      // save in the db!
+      await course?.save()
+
+      res.status(200).json({
+        success: true,
+        message: 'Question added successfully!'
       })
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400))

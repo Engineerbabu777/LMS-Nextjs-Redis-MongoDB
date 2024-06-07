@@ -28,6 +28,9 @@ courseRouter.get('/get-course/:id', getSingleCourse)
 
 courseRouter.get('/get-courses/', getAllCourses)
 
-courseRouter.get('/get-course-content/', getCourseContent)
+courseRouter.get('/get-course-content/:id', isAuthenticated, getCourseContent)
 
-export default courseRouter
+
+export default courseRouter;
+
+
