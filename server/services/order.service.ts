@@ -5,8 +5,11 @@ import { CatchAsyncError } from '../middleware/catchAsyncErrors'
 import { orderModel } from '../models/order.model'
 
 export const newOrder = CatchAsyncError(
-  async (data: any, next: NextFunction) => {
+  async (data: any, res: Response, next: NextFunction) => {
     const order = await orderModel.create(data)
-    next(order)
+    return res.status(201).json({
+      success: true,
+      order: order
+    })
   }
 )
