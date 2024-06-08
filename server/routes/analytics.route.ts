@@ -23,6 +23,19 @@ analyticsRouter.get(
   getUserAnalytics
 )
 
-analyticsRouter.get('/get-courses/', getAllCourses)
+analyticsRouter.get(
+    '/get-orders/',
+    isAuthenticated,
+    authorizeRoles('admin') as any,
+    getUserAnalytics
+  )
+
+  analyticsRouter.get(
+    '/get-courses/',
+    isAuthenticated,
+    authorizeRoles('admin') as any,
+    getUserAnalytics
+  )
+
 
 export default analyticsRouter
