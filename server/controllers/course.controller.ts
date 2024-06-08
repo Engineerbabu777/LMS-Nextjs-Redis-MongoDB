@@ -10,6 +10,7 @@ import path from 'path'
 import ejs from 'ejs'
 import sendMail from '../utils/sendMail'
 import { countReset } from 'console'
+import { notificationModel } from '../models/notification.model'
 
 // upload course!
 export const uploadCourse = CatchAsyncError(
@@ -223,6 +224,13 @@ export const addQuestion = CatchAsyncError(
       // add this question to our course content!
       content.questions.push(newQuestion)
 
+      // here!
+      await notificationModel.create({
+        user: req?.user?._id,
+        message: `You have a new question in ${content?.title}`,
+        title: 'New Question Received'
+      })
+
       // save in the db!
       await course?.save()
 
@@ -285,6 +293,12 @@ export const addReplyToQuestion = CatchAsyncError(
 
       if (req?.user?._id === question?.user?._id) {
         // create notification
+        // here!
+        await notificationModel.create({
+          user: req?.user?._id,
+          message: `You have a new question in ${content?.title}`,
+          title: 'New Question Received'
+        })
       } else {
         // send email!
         const data = {
