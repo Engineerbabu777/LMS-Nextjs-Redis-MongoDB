@@ -9,6 +9,7 @@ import mongoose from 'mongoose'
 import path from 'path'
 import ejs from 'ejs'
 import sendMail from '../utils/sendMail'
+import { countReset } from 'console'
 
 // upload course!
 export const uploadCourse = CatchAsyncError(
@@ -317,3 +318,68 @@ export const addReplyToQuestion = CatchAsyncError(
     }
   }
 )
+
+// add review in course!
+interface IAddReviewData {
+  review: string
+  rating: number
+  userId: string
+}
+
+export const addReview = CatchAsyncError(async (req, res, next) => {
+  try {
+    const userCourseList = req.user.courses
+
+    const courseId = req.params.id
+
+    // check if course id already exists in user course list!
+    const courseExists = userCourseList.some(
+      (course: any) => course._id.toString() === courseId.toString()
+    )
+
+    if (!courseExists) {
+      return next(new ErrorHandler('Not eligible for this course!', 400))
+    }
+
+    const course = await courseModel.findById(courseId);
+
+    const {review,rating} = req.body as IAddReviewData;
+    const reviewData:any = {
+      user: req.user,
+      comment:review,
+      rating,
+    }
+
+    course?.reviews.push(reviewData)
+
+    let avg = 0;
+
+    course?.reviews.forEach((rev:any) => avg += rev.rating)
+
+    if(course){
+      course.ratings = avg/course.reviews.length
+    }
+
+    await course?.save();
+
+
+    const notification = {
+      title:"New Review Received",
+      message: `${req.user?.name} has given a review in ${course?.name}`,
+    }
+
+    // create notifications!
+
+
+
+       res.status(200).json({
+        success: true,
+        message: 'Review added successfully!',
+        course
+      })
+
+
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400))
+  }
+})
