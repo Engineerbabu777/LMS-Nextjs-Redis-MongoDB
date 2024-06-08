@@ -476,7 +476,7 @@ export const deleteUser = CatchAsyncError(
       }
 
       // delete user!
-      await user.deleteOne(id)
+      await userModel.findByIdAndDelete(id)
       // delete from redis!
       await redis.del(id)
 
@@ -490,3 +490,5 @@ export const deleteUser = CatchAsyncError(
     }
   }
 )
+
+

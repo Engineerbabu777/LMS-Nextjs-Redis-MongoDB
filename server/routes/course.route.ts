@@ -3,6 +3,7 @@ import {
   addReplyToQuestion,
   addReplyToReview,
   addReview,
+  deleteCourse,
   editCourse,
   getAllCourses,
   getCourseContent,
@@ -53,4 +54,10 @@ courseRouter.get(
   getAllCourses
 )
 
+courseRouter.delete(
+  '/delete-course/:id',
+  isAuthenticated,
+  authorizeRoles('admin') as any,
+  deleteCourse
+)
 export default courseRouter

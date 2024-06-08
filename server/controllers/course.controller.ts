@@ -444,7 +444,6 @@ export const addReplyToReview = CatchAsyncError(
   }
 )
 
-
 // get all courses
 export const getAllUsers = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -452,6 +451,35 @@ export const getAllUsers = CatchAsyncError(
       getAllCoursesService(res)
     } catch (err: any) {
       next(new ErrorHandler(err.message, 400))
+    }
+  }
+)
+
+// delete course!
+export const deleteCourse = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params
+
+      const user = await courseModel.findById(id)
+
+      if (!user) {
+        // user not found!
+        return next(new ErrorHandler('course not found', 400))
+      }
+
+      // delete user!
+      await courseModel.findByIdAndDelete(id)
+      // delete from redis!
+      await redis.del(id)
+
+      // return back th response!
+      res.status(200).json({
+        success: true,
+        message: 'course deleted Success!'
+      })
+    } catch (err: any) {
+      return next(new ErrorHandler(err.message, 400))
     }
   }
 )
