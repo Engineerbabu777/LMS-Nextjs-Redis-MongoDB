@@ -12,7 +12,11 @@ import {
   sendToken
 } from '../utils/jwt'
 import { redis } from '../utils/redis'
-import { getAllUsersService, getUserById } from '../services/user.services'
+import {
+  getAllUsersService,
+  getUserById,
+  updateUserRoleService
+} from '../services/user.services'
 import cloudinary from 'cloudinary'
 
 interface IRegistrationBody {
@@ -338,7 +342,7 @@ export const updateUserInfo = CatchAsyncError(
         user
       })
     } catch (error: any) {
-      next(new ErrorHandler(error.message, 400))
+      return next(new ErrorHandler(error.message, 400))
     }
   }
 )
@@ -385,7 +389,7 @@ export const updateUserPassword = CatchAsyncError(
         user
       })
     } catch (error: any) {
-      next(new ErrorHandler(error.message, 400))
+      return next(new ErrorHandler(error.message, 400))
     }
   }
 )
@@ -430,7 +434,7 @@ export const updateUserProfilePicture = CatchAsyncError(
         user
       })
     } catch (err: any) {
-      next(new ErrorHandler(err.message, 400))
+      return next(new ErrorHandler(err.message, 400))
     }
   }
 )
@@ -441,7 +445,19 @@ export const getAllUsers = CatchAsyncError(
     try {
       getAllUsersService(res)
     } catch (err: any) {
-      next(new ErrorHandler(err.message, 400))
+      return next(new ErrorHandler(err.message, 400))
+    }
+  }
+)
+
+// update user role -- admin only!
+export const updateUserRole = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id, role } = req.body
+      updateUserRoleService(res, id, role)
+    } catch (err: any) {
+      return next(new ErrorHandler(err.message, 400))
     }
   }
 )
