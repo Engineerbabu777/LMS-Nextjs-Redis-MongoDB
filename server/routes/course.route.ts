@@ -46,7 +46,6 @@ courseRouter.put(
   addReplyToReview
 )
 
-
 courseRouter.get(
   '/get-courses',
   isAuthenticated,
