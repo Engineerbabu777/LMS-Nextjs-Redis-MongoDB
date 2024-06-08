@@ -55,7 +55,8 @@ const reviewSchema = new Schema<IReview>({
   rating: {
     type: Number,
     default: 0
-  }
+  },
+  commentReplies: [Object]
 })
 
 //link schema!
