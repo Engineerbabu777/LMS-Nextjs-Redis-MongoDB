@@ -9,6 +9,10 @@ export const createLayout = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { type } = req.body as any
+      const isTypeExists = await layoutModel.findOne({ type })
+      if (isTypeExists) {
+        return next(new ErrorHandler('Type already exists!', 400))
+      }
       if (type === 'Banner') {
         const { image, title, subTitle } = req.body as any
 
@@ -31,12 +35,27 @@ export const createLayout = CatchAsyncError(
 
       if (type === 'FAQ') {
         const { faq } = req.body as any
-        await layoutModel.create(faq)
+        const faqItems = await Promise.all(
+          faq.map(async (item: any) => {
+            return {
+              question: item.question,
+              answer: item.answer
+            }
+          })
+        )
+        await layoutModel.create({ type: 'FAQ', faq: faqItems })
       }
 
       if (type === 'Categories') {
         const { categories } = req.body as any
-        await layoutModel.create(categories)
+        const categoriesItems = await Promise.all(
+          categories.map(async (item: any) => {
+            return {
+              title: item.title
+            }
+          })
+        )
+        await layoutModel.create({ type: 'Categories', faq: categoriesItems })
       }
 
       res.status(200).json({
