@@ -4,6 +4,7 @@ import ErrorHandler from '../utils/ErrorHandler'
 import { generateLast12MonthsData } from '../utils/analytics.generator'
 import { userModel } from '../models/user.model'
 import { courseModel } from '../models/course.model'
+import { orderModel } from '../models/order.model'
 
 // get users analytics!
 export const getUserAnalytics = CatchAsyncError(
