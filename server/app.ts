@@ -5,6 +5,7 @@ import { errorMiddleware } from './middleware/error'
 import userRouter from './routes/user.route'
 import courseRouter from './routes/course.route'
 import { orderRouter } from './routes/order.route'
+import { notificationRouter } from './routes/notification.route'
 
 export const app = express()
 require('dotenv').config()
@@ -27,6 +28,7 @@ app.use(
 app.use('/api/v1/', userRouter)
 app.use('/api/v1/', courseRouter)
 app.use('/api/v1/', orderRouter)
+app.use('/api/v1/', notificationRouter)
 
 // testing route!
 app.get('/test', async (req: Request, res: Response, next: NextFunction) => {
