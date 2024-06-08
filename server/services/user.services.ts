@@ -14,7 +14,7 @@ export const getUserById = async (id: string, res: Response) => {
 }
 
 // Get all users!
-export const getAllUsers = async (res: Response) => {
+export const getAllUsersService = async (res: Response) => {
   // from mongodb!
   const users = await userModel.find().sort({ createdAt: -1 })
 

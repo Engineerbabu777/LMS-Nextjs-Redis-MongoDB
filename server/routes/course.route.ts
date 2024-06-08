@@ -45,4 +45,12 @@ courseRouter.put(
   addReplyToReview
 )
 
+
+courseRouter.get(
+  '/get-courses',
+  isAuthenticated,
+  authorizeRoles('admin') as any,
+  getAllCourses
+)
+
 export default courseRouter

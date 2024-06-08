@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   activateUser,
+  getAllUsers,
   getUserInfo,
   loginUser,
   logoutUser,
@@ -28,14 +29,17 @@ userRouter.get('/me', isAuthenticated, getUserInfo)
 
 userRouter.post('/social-auth', socialAuth)
 
-userRouter.put(
-  '/update-user-info',
-  isAuthenticated,
-  updateUserInfo
-)
+userRouter.put('/update-user-info', isAuthenticated, updateUserInfo)
 
 userRouter.put('/update-user-password', isAuthenticated, updateUserPassword)
 
 userRouter.put('/update-user-avatar', isAuthenticated, updateUserProfilePicture)
+
+userRouter.get(
+  '/get-users',
+  isAuthenticated,
+  authorizeRoles('admin') as any,
+  getAllUsers
+)
 
 export default userRouter

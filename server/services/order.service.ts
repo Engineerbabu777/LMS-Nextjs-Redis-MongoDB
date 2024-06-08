@@ -13,3 +13,15 @@ export const newOrder = CatchAsyncError(
     })
   }
 )
+
+// Get all users!
+export const getAllOrdersService = async (res: Response) => {
+  // from mongodb!
+  const orders = await orderModel.find().sort({ createdAt: -1 })
+
+  // send back response!
+  res.status(201).json({
+    success: true,
+    orders
+  })
+}

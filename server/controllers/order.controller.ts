@@ -6,7 +6,7 @@ import { userModel } from '../models/user.model'
 import { NextFunction, Request, Response } from 'express'
 import ErrorHandler from '../utils/ErrorHandler'
 import { courseModel } from '../models/course.model'
-import { newOrder } from '../services/order.service'
+import { getAllOrdersService, newOrder } from '../services/order.service'
 import sendMail from '../utils/sendMail'
 import { notificationModel } from '../models/notification.model'
 
@@ -88,6 +88,19 @@ export const createOrder = CatchAsyncError(
       newOrder(data, res, next)
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400))
+    }
+  }
+)
+
+
+
+// get all courses
+export const getAllOrders = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      getAllOrdersService(res)
+    } catch (err: any) {
+      next(new ErrorHandler(err.message, 400))
     }
   }
 )

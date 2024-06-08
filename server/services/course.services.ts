@@ -15,3 +15,15 @@ export const createCourse = CatchAsyncError(
     })
   }
 )
+
+// Get all courses!
+export const getAllCoursesService = async (res: Response) => {
+  // from mongodb!
+  const courses = await courseModel.find().sort({ createdAt: -1 })
+
+  // send back response!
+  res.status(201).json({
+    success: true,
+    courses
+  })
+}
