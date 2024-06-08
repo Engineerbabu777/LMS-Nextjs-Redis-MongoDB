@@ -25,9 +25,4 @@ layoutRouter.put(
   editLayout
 )
 
-layoutRouter.put(
-  '/get-layout',
-  isAuthenticated,
-  authorizeRoles('admin') as any,
-  getLayout
-)
+layoutRouter.put('/get-layout', getLayout)

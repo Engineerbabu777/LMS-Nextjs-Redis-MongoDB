@@ -221,7 +221,7 @@ export const updateAccessToken = CatchAsyncError(
 
       // if no session!
       if (!session) {
-        return next(new ErrorHandler('could not refresh token!', 400))
+        return next(new ErrorHandler('please login for access this resource!', 400))
       }
 
       const user = JSON.parse(session)
@@ -255,6 +255,9 @@ export const updateAccessToken = CatchAsyncError(
 
       // set access token!
       res.cookie('access_token', accessToken, accessTokenOptions)
+
+      // update redis with expiry!
+      await redis.set(user._id, JSON.stringify(user), 'EX', 604800)
 
       // send response!
       res.status(200).json({
@@ -490,5 +493,3 @@ export const deleteUser = CatchAsyncError(
     }
   }
 )
-
-
