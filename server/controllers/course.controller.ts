@@ -329,7 +329,7 @@ interface IAddReviewData {
 export const addReview = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userCourseList = req.user.courses
+      const userCourseList = req?.user?.courses
 
       const courseId = req.params.id
 

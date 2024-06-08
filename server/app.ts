@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import { errorMiddleware } from './middleware/error'
 import userRouter from './routes/user.route'
 import courseRouter from './routes/course.route'
+import { orderRouter } from './routes/order.route'
 
 export const app = express()
 require('dotenv').config()
@@ -25,6 +26,7 @@ app.use(
 // routes!
 app.use('/api/v1/', userRouter)
 app.use('/api/v1/', courseRouter)
+app.use('/api/v1/', orderRouter)
 
 // testing route!
 app.get('/test', async (req: Request, res: Response, next: NextFunction) => {
