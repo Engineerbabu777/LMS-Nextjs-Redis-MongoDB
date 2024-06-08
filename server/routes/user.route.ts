@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   activateUser,
+  deleteUser,
   getAllUsers,
   getUserInfo,
   loginUser,
@@ -10,7 +11,8 @@ import {
   updateAccessToken,
   updateUserInfo,
   updateUserPassword,
-  updateUserProfilePicture
+  updateUserProfilePicture,
+  updateUserRole
 } from '../controllers/user.controller'
 import { authorizeRoles, isAuthenticated } from '../middleware/auth'
 
@@ -35,11 +37,25 @@ userRouter.put('/update-user-password', isAuthenticated, updateUserPassword)
 
 userRouter.put('/update-user-avatar', isAuthenticated, updateUserProfilePicture)
 
+userRouter.put(
+  '/update-user-role',
+  isAuthenticated,
+  authorizeRoles('admin') as any,
+  updateUserRole
+)
+
 userRouter.get(
   '/get-users',
   isAuthenticated,
   authorizeRoles('admin') as any,
   getAllUsers
+)
+
+userRouter.delete(
+  '/delete-user/:id',
+  isAuthenticated,
+  authorizeRoles('admin') as any,
+  deleteUser
 )
 
 export default userRouter
