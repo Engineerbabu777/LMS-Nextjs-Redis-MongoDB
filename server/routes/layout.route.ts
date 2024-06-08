@@ -3,20 +3,31 @@
 import express from 'express'
 import { authorizeRoles, isAuthenticated } from '../middleware/auth'
 
-import { createLayout, editLayout } from '../controllers/layout.controller'
+import {
+  createLayout,
+  editLayout,
+  getLayout
+} from '../controllers/layout.controller'
 
 export const layoutRouter = express.Router()
 
-layoutRouter.get(
-  '/get-all-notifications',
+layoutRouter.post(
+  '/create-layout',
   isAuthenticated,
   authorizeRoles('admin') as any,
   createLayout
 )
 
-layoutRouter.get(
-  '/get-all-notifications',
+layoutRouter.put(
+  '/edit-layout',
   isAuthenticated,
   authorizeRoles('admin') as any,
   editLayout
+)
+
+layoutRouter.put(
+  '/get-layout',
+  isAuthenticated,
+  authorizeRoles('admin') as any,
+  getLayout
 )
