@@ -1,5 +1,6 @@
 "use client";
 import NavItems from "@/utils/NavItems";
+import ThemeSwitcher from "@/utils/ThemeSwitcher";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -44,6 +45,7 @@ export default function Header({ activeItem }: Props) {
 							</div>
 							<div className="flex items-center">
 								<NavItems activeItem={activeItem} isMobile={false} />
+								<ThemeSwitcher />
 							</div>
 						</div>
 					</div>
