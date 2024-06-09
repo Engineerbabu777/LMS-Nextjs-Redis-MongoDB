@@ -1,4 +1,5 @@
 "use client";
+import NavItems from "@/utils/NavItems";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -8,9 +9,9 @@ type Props = {
 	activeItem: number;
 };
 
-export default function Header({}: Props) {
-	const [open, setOpen] = useState(false);
-	const [activeItem, setActiveItem] = useState(0);
+export default function Header({ activeItem }: Props) {
+	const [active, setActive] = useState(false);
+	const [openSidebar, setOpenSidebar] = useState(0);
 
 	if (typeof window !== "undefined") {
 		window.addEventListener("scroll", () => {
