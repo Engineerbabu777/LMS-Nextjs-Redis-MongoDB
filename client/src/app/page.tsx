@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 import { Heading } from "@/utils/Heading";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ export default function Home({}: Props) {
 					keywords="Programming,MERN,Redux"
 				/>
 				<Header open={open} activeItem={activeItem} setOpen={setOpen} />
+			<Hero />
 			</div>
 		</>
 	);

@@ -12,7 +12,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         // Poppins: ["var(--font-Poppins"],
-        Josefin: ["var(--font-Josefin"],
+        // Josefin: ["var(--font-Josefin"],
         // Poppin: ["var(--font-Poppins"],
         // cad:["var(--font-Poppins)"]
       },

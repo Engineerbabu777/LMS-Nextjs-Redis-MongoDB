@@ -2,7 +2,7 @@
 
 import { BiMoon, BiSun } from "react-icons/bi";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
 type Props = {};
@@ -33,6 +33,7 @@ export default function ThemeSwitcher({}: Props) {
 						<BiSun
 							size={25}
 							className="cursor-pointer"
+							fill={"white"}
 							onClick={() => setTheme("light")}
 						/>
 					</>
