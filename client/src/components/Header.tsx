@@ -14,7 +14,7 @@ type Props = {
   setRoute: (route: string) => void
 }
 
-export default function Header ({ open, activeItem, setOpen, route }: Props) {
+export default function Header ({ open, activeItem, setOpen, route,setRoute }: Props) {
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
 
@@ -103,7 +103,8 @@ export default function Header ({ open, activeItem, setOpen, route }: Props) {
           <>
             {open && (
               <>
-                <CustomModal />
+                <CustomModal open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} 
+                component={Login}/>
               </>
             )}
           </>
