@@ -6,6 +6,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from 'react-icons/hi'
 import Login from './auth/Login'
+import SignUp from './auth/SignUp'
 
 type Props = {
   open: boolean,
@@ -114,7 +115,7 @@ export default function Header ({
                   setOpen={setOpen}
                   setRoute={setRoute}
                   activeItem={activeItem}
-                  component={Login}
+                  component={SignUp}
                 />
               </>
             )}
