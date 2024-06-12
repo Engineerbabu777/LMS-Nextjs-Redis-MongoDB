@@ -26,7 +26,9 @@ export default function SignUp ({ setRoute }: Props) {
       password: ''
     },
     validationSchema: schema,
-    onSubmit: async values => {}
+    onSubmit: async values => {
+        setRoute('Verification')
+    }
   })
 
   const { errors, touched, values, handleChange, handleSubmit } = formik
