@@ -11,7 +11,7 @@ type Props = {
 
 export default function CustomModal ({
   activeItem,
-  component,
+  component:Component,
   open,
   setOpen,
   setRoute

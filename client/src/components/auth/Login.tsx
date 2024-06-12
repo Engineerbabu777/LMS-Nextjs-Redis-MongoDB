@@ -3,7 +3,8 @@
 import { styles } from '@/styles/styles'
 import { useFormik } from 'formik'
 import { useState } from 'react'
-import { AiOutlineEyeInvisible } from 'react-icons/ai'
+import { AiFillGithub, AiOutlineEyeInvisible } from 'react-icons/ai'
+import { FcGoogle } from 'react-icons/fc'
 import * as yup from 'yup'
 
 type Props = {
@@ -71,19 +72,53 @@ export default function Login ({ setRoute }: Props) {
             />
             {!show ? (
               <AiOutlineEyeInvisible
-                className='absolute bottom-3 right-2 2-1 cursor-pointer'
+                className='absolute bottom-1 right-2 z-1 cursor-pointer'
                 size={20}
-                onClick={() => setShow(true)}
+                onClick={() => setShow(!show)}
               />
             ) : (
               <AiOutlineEyeInvisible
-                className='absolute bottom-3 right-2 2-1 cursor-pointer'
+                className='absolute bottom-1 right-2 z-1 cursor-pointer'
                 size={20}
-                onClick={() => setShow(true)}
+                onClick={() => setShow(!show)}
               />
             )}
+            {errors.password && touched.password && (
+              <span className='text-red-500 pt-2 block'>{errors.password}</span>
+            )}
           </div>
+
+          <div className='w-full mt-5'>
+            <button
+              type='submit'
+              value='Login'
+              className={`flex flex-row justify-center items-center py-3 px-6 rounded-full cursor-pointer min-h-[45px] w-full font-Poppins bg-[#2190ff] text-[16px] font-semibold`}
+            >
+              Login
+            </button>
+          </div>
+          <br />
+          <h5 className='text-center pt-4 font-Poppins text-[14px] text-black dark:text-white'>
+            Or Join With
+          </h5>
+          <div className='flex items-center justify-center my-3'>
+            {' '}
+            <FcGoogle size={30} className='cursor-pointer mr-2' />{' '}
+            <AiFillGithub size={30} className='cursor-pointer ml-2' />
+          </div>
+          <h5 className='text-center pt-4 font-Poppins text-[14px}'>
+            {' '}
+            Not have any account?{''}
+            <span
+              I
+              className='text-[#2190ff] pl-1 cursor-pointer'
+              onClick={() => setRoute('Sign-Up')}
+            >
+              Sign up
+            </span>
+          </h5>
         </form>
+        <br />
       </div>
     </>
   )

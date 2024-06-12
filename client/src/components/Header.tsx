@@ -5,6 +5,7 @@ import ThemeSwitcher from '@/utils/ThemeSwitcher'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from 'react-icons/hi'
+import Login from './auth/Login'
 
 type Props = {
   open: boolean,
@@ -14,7 +15,13 @@ type Props = {
   setRoute: (route: string) => void
 }
 
-export default function Header ({ open, activeItem, setOpen, route,setRoute }: Props) {
+export default function Header ({
+  open,
+  activeItem,
+  setOpen,
+  route,
+  setRoute
+}: Props) {
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
 
@@ -67,7 +74,7 @@ export default function Header ({ open, activeItem, setOpen, route,setRoute }: P
                 <HiOutlineUserCircle
                   size={25}
                   className='hidden 800px:block cursor-pointer dark:text-white text-black'
-                  onClick={() => setOpenSidebar(true)}
+                  onClick={() => setOpen(true)}
                 />
               </div>
             </div>
@@ -98,13 +105,32 @@ export default function Header ({ open, activeItem, setOpen, route,setRoute }: P
           </div>
         </div>
 
-        {route === 'Sign-Up' && <></>}
+        {route === 'Sign-Up' && (
+          <>
+            {open && (
+              <>
+                <CustomModal
+                  open={open}
+                  setOpen={setOpen}
+                  setRoute={setRoute}
+                  activeItem={activeItem}
+                  component={Login}
+                />
+              </>
+            )}
+          </>
+        )}
         {route === 'Login' && (
           <>
             {open && (
               <>
-                <CustomModal open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} 
-                component={Login}/>
+                <CustomModal
+                  open={open}
+                  setOpen={setOpen}
+                  setRoute={setRoute}
+                  activeItem={activeItem}
+                  component={Login}
+                />
               </>
             )}
           </>
