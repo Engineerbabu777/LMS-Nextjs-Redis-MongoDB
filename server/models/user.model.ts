@@ -86,12 +86,12 @@ userSchema.methods.comparePassword = async function (
 }
 
 // sign access token!
-userSchema.methods.SignAccessToken = async function () {
+userSchema.methods.SignAccessToken = function () {
   return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN!)
 }
 
 // sign refresh token!
-userSchema.methods.SignRefreshToken = async function () {
+userSchema.methods.SignRefreshToken = function () {
   return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN!)
 }
 

@@ -39,10 +39,12 @@ export const refreshTokenOptions: ITokenOptions = {
 }
 
 // send Token!
-export const sendToken = (user: IUser, statusCode: number, res: Response) => {
+export const sendToken = async (user: IUser, statusCode: number, res: Response) => {
   // get access and refresh tokens!
-  const accessToken = user.SignAccessToken()
+  const accessToken =  user.SignAccessToken()
   const refreshToken = user.SignRefreshToken()
+
+  console.log({accessToken,refreshToken})
 
   // upload session to redis!
   redis.set(user.id, JSON.stringify(user))
@@ -53,7 +55,7 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
   }
 
   //  set both in cookies!
-  res.cookie('access_token', accessToken, accessTokenOptions)
+  res.cookie('refresh_token', refreshToken, refreshTokenOptions)
   res.cookie('access_token', accessToken, accessTokenOptions)
 
   // send back the response!
