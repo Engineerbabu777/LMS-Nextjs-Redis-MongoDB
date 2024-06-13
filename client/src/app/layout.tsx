@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import type { Metadata } from 'next'
 import './globals.css'
 import { Poppins } from 'next/font/google'
@@ -7,6 +7,7 @@ import ThemeProvider from '@/utils/theme-provider'
 import CustomModal from '@/utils/CustomModal'
 import { Toaster } from 'react-hot-toast'
 import { Providers } from '@/utils/Provider'
+import { SessionProvider } from 'next-auth/react'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,13 +30,15 @@ export default function RootLayout ({
       <body
         className={`${poppins.variable} ${josefin.variable} !bg-white bg-no-repeat dark:bg-gradient-to-b dark:to-black duration:300 dark:from-gray-900`}
       >
-		<Providers>
-        <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
-          {/* <CustomModal /> */}
-          {children}
-          <Toaster position='top-center' reverseOrder={false} />
-        </ThemeProvider>
-		</Providers>
+        <Providers>
+          <SessionProvider>
+            <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
+              {/* <CustomModal /> */}
+              {children}
+              <Toaster position='top-center' reverseOrder={false} />
+            </ThemeProvider>
+          </SessionProvider>
+        </Providers>
       </body>
     </html>
   )

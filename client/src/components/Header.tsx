@@ -10,6 +10,7 @@ import SignUp from './auth/SignUp'
 import Verification from './auth/Verification'
 import {useSelector} from 'react-redux';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react'
 
 type Props = {
   open: boolean,
@@ -29,6 +30,7 @@ export default function Header ({
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
   const {user} = useSelector((state:any) => state.auth)
+  const {data} = useSession();
 
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', () => {
@@ -76,7 +78,7 @@ export default function Header ({
                     onClick={() => setOpenSidebar(true)}
                   />
                 </div>
-                {user ? (<>
+                {user ? (<Link to="/profile">
                 <Image 
                 className="w-[30px] h-[30px] rounded-full cursor-pointer"
                 alt=""
@@ -84,7 +86,7 @@ export default function Header ({
                 height={30}
                 src={"/images/testuser.png"}
                 />
-                </>):(<>
+                </Link>):(<>
                   <HiOutlineUserCircle
                   size={25}
                   className='hidden 800px:block cursor-pointer dark:text-white text-black'
