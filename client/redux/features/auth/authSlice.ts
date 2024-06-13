@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   token: '',
-  user: ''
+  user: '',
+  accessToken:""
 }
 
 export const authSlice = createSlice({
@@ -12,11 +13,11 @@ export const authSlice = createSlice({
       state.token = action.payload.token
     },
     userLoggedIn: (state, action) => {
-      state.token = action.payload.accessToken
+      state.accessToken = action.payload.accessToken
       state.user = action.payload.user
     },
     userLoggedOut: state => {
-      state.token = ''
+      state.accessToken = ''
       state.user = ''
     }
   }
