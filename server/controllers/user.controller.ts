@@ -279,7 +279,7 @@ export const updateAccessToken = CatchAsyncError(
 export const getUserInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await getUserById(req?.user?.id, res)
+      await getUserById(req?.user?._id as string, res)
     } catch (err: any) {
       next(new ErrorHandler(err.message, 400))
     }

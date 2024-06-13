@@ -4,8 +4,9 @@ import { userModel } from '../models/user.model'
 
 // get user by id!
 export const getUserById = async (id: string, res: Response) => {
+  console.log({id})
   const userJSON = await redis.get(id)
-
+console.log({userJSON})
   if (!userJSON) {
     throw new Error('User not found')
   }
