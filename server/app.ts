@@ -22,17 +22,18 @@ app.use(cookieParser())
 app.use(
   cors({
     credentials: true,
-    origin: process.env.ORIGIN!
+    origin: "http://localhost:3000",
+    methods:["GET","POST","PUT","DELETE"],
   })
 )
 
 // routes!
-app.use('/api/v1/', userRouter)
-app.use('/api/v1/', courseRouter)
-app.use('/api/v1/', orderRouter)
-app.use('/api/v1/', notificationRouter)
-app.use('/api/v1/', analyticsRouter)
-app.use('/api/v1/', layoutRouter)
+app.use('/api/v1', userRouter)
+app.use('/api/v1', courseRouter)
+app.use('/api/v1', orderRouter)
+app.use('/api/v1', notificationRouter)
+app.use('/api/v1', analyticsRouter)
+app.use('/api/v1', layoutRouter)
 
 // testing route!
 app.get('/test', async (req: Request, res: Response, next: NextFunction) => {

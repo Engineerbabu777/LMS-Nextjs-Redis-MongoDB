@@ -55,7 +55,8 @@ export const registrationUser = CatchAsyncError(
           email: user.email,
           subject: 'Activate your account!',
           data,
-          template: 'activation-mail.ejs'
+          template: `<p>Hello${user.name}</p>
+    <h2>${activationCode}</h2>`
         })
 
         res.status(201).json({
@@ -221,7 +222,9 @@ export const updateAccessToken = CatchAsyncError(
 
       // if no session!
       if (!session) {
-        return next(new ErrorHandler('please login for access this resource!', 400))
+        return next(
+          new ErrorHandler('please login for access this resource!', 400)
+        )
       }
 
       const user = JSON.parse(session)

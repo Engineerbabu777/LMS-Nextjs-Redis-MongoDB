@@ -13,28 +13,33 @@ interface EmailOptions {
 }
 
 const sendMail = async (options: EmailOptions): Promise<void> => {
-  const transporter: Transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    service: process.env.SMTP_SERVICE,
+  console.log('ENTRING')
+  const transporter = nodemailer.createTransport({
+    // CONFIGURATION!
+    service: 'gmail',
     auth: {
-      user: process.env.SMTP_MAIL,
-      pass: process.env.SMTP_PASSWORD
+      user: 'projectbase999@gmail.com',
+      pass: 'yjrf hpvb zoyd ijmd'
     }
   })
 
-  const { email, subject, template, data } = options
-  const templatePath = path.join(__dirname, '../mails/', template)
-
-  const html: string = await ejs.renderFile(templatePath, data)
+  // COMPOSE THE EMAIL MESSAGE!
   const mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject,
-    html
+    from: 'projectbase999@gmail.com',
+    to: options.email,
+    subject: 'Reset Your Password',
+    html:options.template
   }
 
-  await transporter.sendMail(mailOptions)
+  // SEND EMAIL!
+  try {
+    console.log('Sending mail...')
+    const email = await transporter.sendMail(mailOptions)
+    console.log('mail sent')
+    console.log('Email Data', email)
+  } catch (error) {
+    console.log('Error while sending email!')
+  }
 }
 
 export default sendMail

@@ -110,7 +110,6 @@ export default function Login ({ setRoute }: Props) {
             {' '}
             Not have any account?{''}
             <span
-              I
               className='text-[#2190ff] pl-1 cursor-pointer'
               onClick={() => setRoute('Sign-Up')}
             >

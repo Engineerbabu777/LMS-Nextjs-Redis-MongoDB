@@ -1,4 +1,5 @@
-import React, { useRef } from 'react'
+import { styles } from '@/styles/styles'
+import React, { useRef, useState } from 'react'
 import { VscWorkspaceTrusted } from 'react-icons/vsc'
 
 type Props = {
