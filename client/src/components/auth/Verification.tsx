@@ -3,6 +3,7 @@ import React, { useRef, useState,useEffect } from 'react'
 import { VscWorkspaceTrusted } from 'react-icons/vsc'
 import { useActivationMutation } from '../../../redux/features/auth/authApi'
 import toast from 'react-hot-toast'
+import {useSelector} from 'react-redux';
 
 type Props = {
   setRoute: (route: string) => void
@@ -16,10 +17,12 @@ type VerifyNumber = {
 }
 export default function Verification({ setRoute }: Props) {
   const [invalidError, setInvalidError] = useState < boolean > (false)
-  const [activation,{isSuccess,error}] = useActivationMutation()
+  const [activation,{isSuccess,error,data}] = useActivationMutation()
  
- 
+ const {token} = useSelector((state:any) => state.auth)
   
+ console.log({token})
+
   useEffect(() => {
     if(isSuccess){
       const message = data?.message
@@ -57,11 +60,15 @@ export default function Verification({ setRoute }: Props) {
       setInvalidError(true);
       return;
     }
+
+    const data = {
+      activation_token: token,
+      activation_code: verificationNumber,
+    }
+
+    console.log({data})
  
-    await activation({
-    activation_token: token,
-    activation_code: verificationNumber,
-    });
+    await activation(data);
   }
   const handleInputChange = (index: number, value: string) => {
     setInvalidError(false)

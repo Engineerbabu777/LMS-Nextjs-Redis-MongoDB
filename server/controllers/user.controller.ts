@@ -103,8 +103,9 @@ export const activateUser = CatchAsyncError(
     try {
       const { activation_code, activation_token } =
         req.body as IActivationRequest
+        console.log({body:req.body})
       const newUser: { user: IUser; activationCode: string } = jwt.verify(
-        activation_code,
+        activation_token,
         process.env.ACTIVATION_SECRET!
       ) as { user: IUser; activationCode: string }
 
