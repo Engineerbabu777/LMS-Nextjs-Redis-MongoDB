@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
+import { AiOutlineLogout } from 'react-icons/ai'
 import { RiLockPasswordLine } from 'react-icons/ri'
+import { SiCoursera } from 'react-icons/si'
 
 type Props = {
   user: any,
@@ -45,7 +47,26 @@ export default function SideBarProfile ({
           onClick={() => setActive(2)}
         >
           <RiLockPasswordLine size={20} fill='#fff' />
-          <h5 className='pl-2 800px:block hidden'>Change Password</h5>
+          <h5 className='pl-2 800px:block hidden font-Poppins dark: text-white text-black'>Change Password</h5>
+        </div>
+        <div
+          className={`w-full flex items-center px-3 py-4 cursor-pointer ${
+            active === 2 ? 'dark: bg-slate-800 bg-white' : 'bg-transparent'
+          }`}
+          onClick={() => setActive(3)}
+        >
+          <SiCoursera size={20} fill='#fff' />
+          <h5 className='pl-2 800px:block hidden font-Poppins dark: text-white text-black'>All Enrolled Courses</h5>
+        </div>
+
+        <div
+          className={`w-full flex items-center px-3 py-4 cursor-pointer ${
+            active === 2 ? 'dark: bg-slate-800 bg-white' : 'bg-transparent'
+          }`}
+          onClick={() => logoutHandler()}
+        >
+          <AiOutlineLogout size={20} fill='#fff' />
+          <h5 className='pl-2 800px:block hidden font-Poppins dark: text-white text-black'>Logout</h5>
         </div>
       </div>
     </>
