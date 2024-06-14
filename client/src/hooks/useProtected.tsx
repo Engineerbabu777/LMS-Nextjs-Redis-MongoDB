@@ -1,8 +1,9 @@
+import { redirect } from 'next/navigation'
+import UserAuth from './userAuth'
+import React from 'react'
 
+export default function Protected ({ children }: { children: React.ReactNode }) {
+  const isAuthenticated = UserAuth()
 
-import { redirect } from "next/navigation";
-
-
-export default function Protected({children}:any){
-    
+  return isAuthenticated ? children : redirect('/')
 }
