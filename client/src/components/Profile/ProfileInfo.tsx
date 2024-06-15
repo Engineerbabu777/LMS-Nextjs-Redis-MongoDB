@@ -20,9 +20,10 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     const fileReader = new FileReader()
     fileReader.onload = () => {
       if (fileReader.readyState == 2) {
-        updateAvatar({
-          avatar: fileReader.result
-        })
+        const avatar = fileReader.result
+        updateAvatar(
+          avatar
+        )
       }
     }
     fileReader.readAsDataURL(e.target.files[0])
@@ -108,3 +109,6 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
     </>
   )
 }
+
+
+export default ProfileInfo
